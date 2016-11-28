@@ -1,0 +1,1 @@
+window['Assimp'] = (function () {

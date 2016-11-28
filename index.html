@@ -1,0 +1,63 @@
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>assimp2json</title>
+	<script>
+	// https://github.com/filamentgroup/loadCSS
+	!function(e){"use strict";var t=function(t,n,i){var o,a=e.document,d=a.createElement("link"),r=i||"all";if(n)o=n;else{var l=(a.body||a.getElementsByTagName("head")[0]).childNodes;o=l[l.length-1]}var s=a.styleSheets;d.rel="stylesheet",d.href=t,d.media="only x",o.parentNode.insertBefore(d,n?o:o.nextSibling);var f=function(e){for(var t=d.href,n=s.length;n--;)if(s[n].href===t)return e();setTimeout(function(){f(e)})};return d.addEventListener&&d.addEventListener("load",function(){this.media=r}),d.onloadcssdefined=f,f(function(){d.media!==r&&(d.media=r)}),d};"undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this);
+	loadCSS('https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css');
+	</script>
+	<style>
+		textarea { width: 100%; height: 400px; margin-top: 15px; }
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-6">
+				<h2>
+					assimp2json
+				</h2>
+				<p>
+					This <a href="https://github.com/acgessler/assimp2json">assimp2json</a> javascript build should support all <a href="https://github.com/assimp/assimp">assimp</a> input formats except Cinema4D, IFC, OpenGEX and Q3BSP.
+				</p>
+
+				<input autocomplete="off" type="file" onchange="onFile(event)" class="file" disabled />
+				<textarea readonly></textarea>
+			</div>
+			<div class="col-md-3">
+			</div>
+		</div>
+	</div>
+	<script src="assimp.js"></script>
+	<script>
+	// http://people.sc.fsu.edu/~jburkardt/data/obj/cube.obj
+	var cube = '# cube.obj\n#\n\ng cube\n\nv  0.0  0.0  0.0\nv  0.0  0.0  1.0\nv  0.0  1.0  0.0\nv  0.0  1.0  1.0\nv  1.0  0.0  0.0\nv  1.0  0.0  1.0\nv  1.0  1.0  0.0\nv  1.0  1.0  1.0\n\nvn  0.0  0.0  1.0\nvn  0.0  0.0 -1.0\nvn  0.0  1.0  0.0\nvn  0.0 -1.0  0.0\nvn  1.0  0.0  0.0\nvn -1.0  0.0  0.0\n\nf  1//2  7//2  5//2\nf  1//2  3//2  7//2\nf  1//6  4//6  3//6 \nf  1//6  2//6  4//6\nf  3//3  8//3  7//3\nf  3//3  4//3  8//3 \nf  5//5  7//5  8//5 \nf  5//5  8//5  6//5 \nf  1//4  5//4  6//4 \nf  1//4  6//4  2//4 \nf  2//1  6//1  8//1 \nf  2//1  8//1  4//1 ';
+
+	function onSuccessfullyParsed (result) {
+		document.querySelector ('textarea').value = result;
+	}
+
+	Assimp.parse (cube, 'cube.obj', onSuccessfullyParsed);
+
+	function onFile (event) {
+		var files = event.target.files;
+		if (files && files[0]) {
+			var reader = new FileReader ();
+			reader.onload = function (e) {
+				try {
+					Assimp.parse (reader.result, files[0].name, onSuccessfullyParsed);
+				} catch (oops) {
+					document.querySelector ('textarea').value = oops; throw oops;
+				}
+			}
+			reader.readAsArrayBuffer (files[0]);
+		}
+	}
+
+	document.querySelector ('[type="file"]').disabled = false;
+	</script>
+</body>
+</html>
