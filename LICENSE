@@ -1,0 +1,7 @@
+The code used in this repo is under following licenses:
+
+assimp license: https://github.com/assimp/assimp/blob/master/LICENSE
+
+assimp2json license: https://github.com/acgessler/assimp2json/blob/master/LICENSE
+
+The rest of it (my own files) are in public domain.
